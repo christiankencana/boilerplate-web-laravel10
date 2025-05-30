@@ -17,7 +17,10 @@ class RegisterController extends RegisteredUserController
 
     public function showRegistrationForm()
     {
-        return view('pages/auth/register');
+        $roles = Role::whereIn('name', ['User Vendor', 'User Customer'])->get();
+        $companies = Company::all();
+
+        return view('pages/auth/register', compact('roles', 'companies'));
     }
 
     public function registerAccount(Request $request)
@@ -26,7 +29,14 @@ class RegisterController extends RegisteredUserController
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'roles' => ['required', 'exists:roles,id'],
+            'companies' => ['required', 'exists:tb_companies,id'],
         ]);
+
+        $selectedRole = Role::find($request->roles);
+        if (!$selectedRole || !in_array($selectedRole->name, ['User Vendor', 'User Customer'])) {
+            return redirect()->back()->withErrors(['roles' => 'Invalid role selected.'])->withInput();
+        }
 
         // // Tidak Langsung ke halaman Login
         $user = User::create([
@@ -35,8 +45,9 @@ class RegisterController extends RegisteredUserController
             'password' => Hash::make($request->password),
             'status_account' => 'inactive',
         ]);
-        return redirect()->route('login')
-            ->with('status', 'Registration successful! Please log in.');
+        $user->assignRole($selectedRole);
+        $user->companies()->sync([$request->companies]);
+        return redirect()->route('login')->with('status', 'Registration successful! Please log in.');
 
         // // Langsung ke halaman Login
         // $user = tap(User::create([
@@ -46,6 +57,8 @@ class RegisterController extends RegisteredUserController
         // ]), function (User $user) {
         //     $this->guard()->login($user);
         // });
+        // $user->assignRole($selectedRole);
+        // $user->companies()->sync($request->companies);
         // return redirect()->intended('/dashboard');
     }
 }

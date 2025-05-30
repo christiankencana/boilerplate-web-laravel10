@@ -46,6 +46,40 @@
             </div>
 
             <div class="form-group">
+                <label class="font-weight-bold text-uppercase">Role</label>
+                <select name="roles" class="form-control @error('roles') is-invalid @enderror">
+                    <option value="" disabled selected>Select Role</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->id }}" {{ old('roles') == $role->id ? 'selected' : '' }}>
+                            {{ $role->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('roles')
+                <div class="alert alert-danger mt-2">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label class="font-weight-bold text-uppercase">Companies</label>
+                <select name="companies" class="form-control @error('companies') is-invalid @enderror">
+                    <option value="" disabled selected>Select Company</option>
+                    @foreach ($companies as $company)
+                        <option value="{{ $company->id }}" {{ old('companies') == $company->id ? 'selected' : '' }}>
+                            {{ $company->company_main_name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('companies')
+                <div class="alert alert-danger mt-2">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+
+            <div class="form-group">
                 <label class="font-weight-bold text-uppercase">Password</label>
                 <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter Password">
                 @error('password')

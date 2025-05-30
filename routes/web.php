@@ -25,8 +25,12 @@ Route::get('/', function () {
 // Route::post('register-account', 'App\Http\Controllers\Auth\RegisterController@registerAccount')->name('register.account');
 // Route::post('update-password', 'App\Http\Controllers\Auth\ForgotPasswordController@updatePassword')->name('update.password');
 
+// Auth Page (Custom)
+Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
+Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'registerAccount'])->middleware('guest');
+
 Route::group(['middleware' => ['auth']], function () {
-    // Roles, Users, Permissions Page 
+    // Roles, Users, Permissions Page
     Route::get('/permissions', \App\Http\Controllers\Account\PermissionController::class)->name('permissions.index')->middleware('permission:permissions.index');
     Route::resource('/roles', \App\Http\Controllers\Account\RoleController::class)->middleware('permission:roles.index|roles.create|roles.edit|roles.delete');
     Route::resource('/users', \App\Http\Controllers\Account\UserController::class)->middleware('permission:users.index|users.create|users.edit|users.delete');
@@ -34,7 +38,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/users/{id}/updateRoles', [\App\Http\Controllers\Account\UserController::class, 'updateRoles'])->name('users.updateRoles');
     Route::post('/users/{id}/updateCompanies', [\App\Http\Controllers\Account\UserController::class, 'updateCompanies'])->name('users.updateCompanies');
 
-    // Profiles Page 
+    // Profiles Page
     Route::get('/profiles', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profiles.index');
     Route::put('/profiles/{user}', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profiles.update');
 
@@ -42,10 +46,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/help', [\App\Http\Controllers\HelpController::class, 'index'])->name('help.index');
 
-    // Operations : Clients Page 
+    // Operations : Clients Page
     Route::resource('/clients', \App\Http\Controllers\Operation\ClientController::class)->middleware('permission:clients.index|clients.create|clients.edit|clients.delete');
 
-    // Operations : Companies & CompanyHasLocations Page 
+    // Operations : Companies & CompanyHasLocations Page
     Route::resource('/companies', \App\Http\Controllers\Operation\CompanyController::class)->middleware('permission:companies.index|companies.create|companies.edit|companies.delete');
     Route::get('/companies/{company}/locations', [\App\Http\Controllers\Operation\CompanyController::class, 'locations'])->name('companies.locations.index')->middleware('permission:companies.index|companies.create|companies.edit|companies.delete');
     Route::get('/companies/{company}/locations/create', [\App\Http\Controllers\Operation\CompanyHasLocationController::class, 'create'])->name('companies.locations.create')->middleware('permission:companies.index|companies.create|companies.edit|companies.delete');

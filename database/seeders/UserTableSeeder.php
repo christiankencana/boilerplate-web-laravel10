@@ -39,7 +39,8 @@ class UserTableSeeder extends Seeder
         $roles = [
             'Administrator' => Role::findOrCreate('Administrator'),
             'Management' => Role::findOrCreate('Management'),
-            'User' => Role::findOrCreate('User'),
+            'User A' => Role::findOrCreate('User A'),
+            'User B' => Role::findOrCreate('User B'),
         ];
 
         $rolePermissions = [
@@ -74,7 +75,11 @@ class UserTableSeeder extends Seeder
                 'clients.index',
                 'companies.index',
             ],
-            'User' => [
+            'User A' => [
+                'dashboard.index',
+                'help.index',
+            ],
+            'User B' => [
                 'dashboard.index',
                 'help.index',
             ],
@@ -117,7 +122,7 @@ class UserTableSeeder extends Seeder
 
         // init user
         foreach ($usersData as $userData) {
-            
+
             // user
             $user = User::create([
                 'name' => $userData['name'],
@@ -125,13 +130,13 @@ class UserTableSeeder extends Seeder
                 'password' => $userData['password'],
                 'status_account' => $userData['status_account'],
             ]);
-        
+
             // role
             foreach ($userData['roles'] as $roleName) {
                 $role = $roles[$roleName];
                 $user->assignRole($role);
             }
-        
+
             // company
             $companyId = [];
             foreach ($userData['companies'] as $companyCode) {
@@ -143,9 +148,9 @@ class UserTableSeeder extends Seeder
             // user has companies (pivot)
             $pivotData = [];
             foreach ($companyId as $companyId) {
-                $pivotData[$companyId] = ['id' => (string) Str::uuid()]; 
+                $pivotData[$companyId] = ['id' => (string) Str::uuid()];
             }
             $user->companies()->attach($pivotData);
-        }        
+        }
     }
 }
