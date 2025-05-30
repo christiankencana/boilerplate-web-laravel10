@@ -19,8 +19,6 @@
 
         <h4 class="font-weight-bold text-center">Login</h4>
         <hr>
-        <!-- Gunakan ini jika menggunakan Fortify -->
-        <!-- <form action="{{ route('login') }}" method="POST"> -->
 
         <form action="{{ route('login') }}" method="POST">
             @csrf

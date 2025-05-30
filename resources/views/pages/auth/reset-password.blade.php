@@ -19,7 +19,6 @@
         <h4 class="font-weight-bold text-center">Forgot Password</h4>
         <hr>
 
-        <!-- Using Fortify -->
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
             <input type="hidden" name="token" value="{{ $request->route('token') }}">
