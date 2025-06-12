@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,4 +72,5 @@
     <script src="{{ asset('assets/vendors/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('assets/js/template.js') }}"></script>
 </body>
+
 </html>

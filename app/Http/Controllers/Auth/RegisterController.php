@@ -43,7 +43,7 @@ class RegisterController extends RegisteredUserController
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'status_account' => 'inactive',
+            'status_account' => 'active',
         ]);
         $user->assignRole($selectedRole);
         $user->companies()->sync([$request->companies]);

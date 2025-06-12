@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -99,11 +100,12 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(255,255,255,0.85);
+            background: rgba(255, 255, 255, 0.85);
             justify-content: center;
             align-items: center;
             transition: background 0.3s;
         }
+
         #fullPageLoader.active {
             display: flex;
         }
@@ -135,13 +137,14 @@
 
     {{-- Custom Script - Loader --}}
     @push('scripts')
-    <script>
-        $(document).on('submit', 'form', function() {
-            $('#fullPageLoader').addClass('active');
-        });
-    </script>
+        <script>
+            $(document).on('submit', 'form', function() {
+                $('#fullPageLoader').addClass('active');
+            });
+        </script>
     @endpush
 
     @stack('scripts')
 </body>
+
 </html>
